@@ -83,7 +83,8 @@ bool StableDiffusionGGML::load_from_file(const std::string& model_path,
                         bool clip_on_cpu,
                         bool control_net_cpu,
                         bool vae_on_cpu,
-                        bool diffusion_flash_attn) {
+                        bool diffusion_flash_attn,
+                        StableDiffusionLoadConfiguration details) {
         use_tiny_autoencoder = taesd_path.size() > 0;
 #ifdef SD_USE_CUDA
         LOG_DEBUG("Using CUDA backend");
@@ -272,8 +273,12 @@ bool StableDiffusionGGML::load_from_file(const std::string& model_path,
             cond_stage_model->alloc_params_buffer();
             cond_stage_model->get_param_tensors(tensors);
 
-            diffusion_model->alloc_params_buffer();
-            diffusion_model->get_param_tensors(tensors);
+            if(!details.skip_unet) {
+                diffusion_model->alloc_params_buffer();
+                diffusion_model->get_param_tensors(tensors);
+            }
+            assert(!details.skip_vae);// not implemented yet
+            assert(!details.skip_text_encoders);// not implemented yet
 
             if (!use_tiny_autoencoder) {
                 if (vae_on_cpu && !ggml_backend_is_cpu(backend)) {

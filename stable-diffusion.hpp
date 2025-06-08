@@ -37,6 +37,13 @@ void calculate_alphas_cumprod(float* alphas_cumprod,
     }
 }
 
+struct StableDiffusionLoadConfiguration
+{
+	bool skip_unet = false;
+	bool skip_vae = false;
+	bool skip_text_encoders = false;
+};
+
 /*=============================================== StableDiffusionGGML ================================================*/
 
 class StableDiffusionGGML {
@@ -108,7 +115,8 @@ public:
                         bool clip_on_cpu,
                         bool control_net_cpu,
                         bool vae_on_cpu,
-                        bool diffusion_flash_attn);
+                        bool diffusion_flash_attn,
+						StableDiffusionLoadConfiguration details = StableDiffusionLoadConfiguration());
 
     bool is_using_v_parameterization_for_sd2(ggml_context* work_ctx, bool is_inpaint = false);
 
