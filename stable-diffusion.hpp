@@ -22,6 +22,21 @@
 
 /*================================================== Helper Functions ================================================*/
 
+ggml_tensor* vae_sample(ggml_context* work_ctx,
+    ggml_tensor* moments,
+    float scale_factor,
+    std::shared_ptr<RNG> rng);
+
+ggml_tensor* vae_run(
+    AutoEncoderKL *first_stage_model,
+    ggml_context* work_ctx,
+    ggml_tensor* x,
+    bool decode,
+    SDVersion version,
+    float scale_factor,
+    bool vae_tiling,
+    int n_threads);
+
 void calculate_alphas_cumprod(float* alphas_cumprod,
                               float linear_start = 0.00085f,
                               float linear_end   = 0.0120,
