@@ -40,17 +40,7 @@ ggml_tensor* vae_run(
 void calculate_alphas_cumprod(float* alphas_cumprod,
                               float linear_start = 0.00085f,
                               float linear_end   = 0.0120,
-                              int timesteps      = TIMESTEPS) {
-    float ls_sqrt = sqrtf(linear_start);
-    float le_sqrt = sqrtf(linear_end);
-    float amount  = le_sqrt - ls_sqrt;
-    float product = 1.0f;
-    for (int i = 0; i < timesteps; i++) {
-        float beta = ls_sqrt + amount * ((float)i / (timesteps - 1));
-        product *= 1.0f - powf(beta, 2.0f);
-        alphas_cumprod[i] = product;
-    }
-}
+                              int timesteps      = TIMESTEPS);
 
 struct StableDiffusionLoadConfiguration
 {

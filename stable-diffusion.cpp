@@ -6,6 +6,21 @@
 #include "stb_image.h"
 
 
+void calculate_alphas_cumprod(float* alphas_cumprod,
+                              float linear_start,
+                              float linear_end,
+                              int timesteps) {
+    float ls_sqrt = sqrtf(linear_start);
+    float le_sqrt = sqrtf(linear_end);
+    float amount  = le_sqrt - ls_sqrt;
+    float product = 1.0f;
+    for (int i = 0; i < timesteps; i++) {
+        float beta = ls_sqrt + amount * ((float)i / (timesteps - 1));
+        product *= 1.0f - powf(beta, 2.0f);
+        alphas_cumprod[i] = product;
+    }
+}
+
 // ldm.models.diffusion.ddpm.LatentDiffusion.get_first_stage_encoding
 ggml_tensor* vae_sample(ggml_context* work_ctx, ggml_tensor* moments, float scale_factor, std::shared_ptr<RNG> rng)
 {
