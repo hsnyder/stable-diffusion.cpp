@@ -117,7 +117,13 @@ add_definitions(-DGGML_MAX_NAME=128)
 # deps
 # Only add ggml if it hasn't been added yet
 if (NOT TARGET ggml)
-    add_subdirectory(ggml)
+    include(FetchContent)
+    FetchContent_Declare(
+            ggml
+            GIT_REPOSITORY https://github.com/ggerganov/ggml.git
+            GIT_TAG ff9052988b76e137bcf92bb335733933ca196ac0
+    )
+    FetchContent_MakeAvailable(ggml)
 endif()
 
 add_subdirectory(thirdparty)
